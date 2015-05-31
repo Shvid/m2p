@@ -3,7 +3,7 @@
 	<groupId>com.noorq.m2p</groupId>
 	<artifactId>m2p</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>m2p</name>
 
 	<properties>
