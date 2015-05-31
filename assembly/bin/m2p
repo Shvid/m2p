@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+CDIR=`pwd`
+BIN=`dirname "$0"`
+pushd $BIN/../log 1> /dev/null
+
+#JAVA_HOME=
+
+JAVA_OPTS="-server -Xss412k"
+JAVA_OPTS="$JAVA_OPTS -Xms512m -Xmx512m -XX:MaxPermSize=256m"
+
+# OS detection
+cygwin=false
+darwin=false
+os400=false
+case "`uname`" in
+CYGWIN*) cygwin=true;;
+Darwin*) darwin=true;;
+OS400*) os400=true;;
+esac
+
+if $cygwin; then
+  JAR_SEPARATOR=";"
+else
+  JAR_SEPARATOR=":"
+fi
+
+CLASSPATH='../conf'
+
+for f in ../lib/*.jar; do
+  CLASSPATH=${CLASSPATH}${JAR_SEPARATOR}$f;
+done
+
+if [ "$JAVA_HOME" == "" ]; then
+  JAVA=java
+else
+  JAVA=$JAVA_HOME/bin/java
+fi
+
+export CLASSPATH
+export JAVA
+export JAVA_OPTS
+
+MAIN=com.noorq.m2p.MainStart
+"$JAVA" -server -classpath ${CLASSPATH} ${JAVA_OPTS} ${ARGS} -Dcurrent.dir=${CDIR} -Duser="$USER" "$MAIN" $@
+
+popd 1> /dev/null
+
+
