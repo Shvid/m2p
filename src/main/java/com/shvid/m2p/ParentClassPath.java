@@ -48,7 +48,7 @@ public class ParentClassPath {
 
 	public boolean isModuleDir(File dir) {
 		String name = dir.getName();
-		if ("bin".equals(name) || "target".equals(name)) {
+		if ("bin".equals(name) || "target".equals(name) || ".m2pignore".equals(name)) {
 			return false;
 		}
 		return true;
