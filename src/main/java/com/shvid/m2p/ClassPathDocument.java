@@ -28,8 +28,13 @@ import org.jsoup.select.Elements;
 
 public class ClassPathDocument {
 
+	private final String projectDir;
 	private final Map<String, Element> entriesMap = new HashMap<String, Element>();
 
+	public ClassPathDocument(String projectDir) {
+		this.projectDir = projectDir;
+	}
+	
 	public void addFile(File file, String module) throws IOException {
 
 		Document doc = Jsoup.parse(file, "UTF-8");
@@ -45,19 +50,46 @@ public class ClassPathDocument {
 				continue;
 			}
 
+			boolean addPath = true;
+			
 			if ("src".equals(kind)) {
 
-				if (!path.startsWith("src")) {
-					continue;
+				if (path.startsWith("/")) {
+					// could be root file dir or project in eclipse
+					
+					boolean eclipseModule = path.indexOf("/", 1) == -1;
+					
+					if (eclipseModule) {
+						continue;
+					}
+					
+					if (path.startsWith(projectDir)) {
+						path = path.substring(projectDir.length());
+						
+						if (path.startsWith("/")) {
+							path = path.substring(1);
+						}
+						
+					}
+					
+				}
+				else {
+					path = module + File.separator + path;
 				}
 
-				path = module + File.separator + path;
-
+				File pathFile = new File(projectDir + File.separator + path);
+				
+				if (!pathFile.exists()) {
+					addPath = false;
+				}
+				
 				entry.attr("path", path);
 
 			}
 
-			entriesMap.put(path, entry);
+			if (addPath) {
+				entriesMap.put(path, entry);
+			}
 
 		}
 

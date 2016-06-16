@@ -55,7 +55,7 @@ public class MainStart {
 			System.out.println("	" + f);
 		}
 
-		ClassPathDocument doc = new ClassPathDocument();
+		ClassPathDocument doc = new ClassPathDocument(currentDir);
 
 		for (Map.Entry<File, String> e : classpaths.entrySet()) {
 			doc.addFile(e.getKey(), e.getValue());
