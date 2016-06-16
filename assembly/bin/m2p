@@ -41,7 +41,7 @@ export CLASSPATH
 export JAVA
 export JAVA_OPTS
 
-MAIN=com.noorq.m2p.MainStart
+MAIN=com.shvid.m2p.MainStart
 "$JAVA" -server -classpath ${CLASSPATH} ${JAVA_OPTS} ${ARGS} -Dcurrent.dir=${CDIR} -Duser="$USER" "$MAIN" $@
 
 popd 1> /dev/null
